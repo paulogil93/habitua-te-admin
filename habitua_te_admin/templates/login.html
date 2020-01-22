@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Habitua-te Admin</title>
+
+   <!-- Custom fonts for this template-->
+   {% load static %}
+   <link href="{% static 'server/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+ 
+   <!-- Custom styles for this template-->
+   {% load static %}
+   <link href="{% static 'server/css/sb-admin.css' %}" rel="stylesheet">
+
+   <link rel="shortcut icon" href="{% static 'server/favicon.ico' %}" />
+
+</head>
+
+<body class="bg-dark">
+
+  <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <form action="/do_login/" method="POST">{% csrf_token %}
+          <div class="form-group">
+            <div class="form-label-group">
+              <input name="username" type="text" id="inputEmail" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
+              <label for="inputEmail">Utilizador</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label-group">
+              <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="required">
+              <label for="inputPassword">Password</label>
+            </div>
+          </div>
+          <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+          <input class="btn btn-primary btn-block" type="submit" value="Iniciar sessão"></input>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  {% load static %}
+  <script src="{% static 'server/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'server/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  {% load static %}
+  <script src="{% static 'server/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+</body>
+
+</html>

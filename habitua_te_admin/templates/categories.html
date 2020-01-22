@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Categorias</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.css">
+
+  <!-- Custom fonts for this template-->
+  {% load static %}
+  <link href="{% static 'server/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+
+  <!-- Page level plugin CSS-->
+  {% load static %}
+  <link href="{% static 'server/vendor/datatables/dataTables.bootstrap4.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template-->
+  {% load static %}
+  <link href="{% static 'server/css/sb-admin.css' %}" rel="stylesheet">
+
+  <link rel="shortcut icon" href="{% static 'server/favicon.ico' %}" />
+
+</head>
+
+<body id="page-top">
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
+
+    <a class="navbar-brand mr-1" href="/index">Habitua-te</a>
+
+    <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Navbar Search -->
+    <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+
+    </form>
+
+    <!-- Navbar -->
+    <ul class="navbar-nav ml-auto ml-md-0 mr-0 mr-md-3 my-2 my-md-0">
+      <li class="nav-item dropdown no-arrow mx-1">
+          <a class="nav-link" href="#" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-fw">{{ user }}</i>
+          </a>
+        </li>
+      <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-user-circle fa-fw"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+          <a class="dropdown-item" href="#">{{ user }}</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Terminar sessão</a>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="sidebar navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/index">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/users">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Utilizadores</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/products">
+            <i class="fas fa-fw fa-shopping-cart"></i>
+            <span>Produtos</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/events">
+            <i class="fas fa-fw fa-calendar-day"></i>
+            <span>Eventos</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/categories">
+            <i class="fas fa-fw fa-list"></i>
+            <span>Categorias</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/news">
+            <i class="fas fa-fw fa-newspaper"></i>
+            <span>Notícias</span></a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="/notifications">
+              <i class="fas fa-fw fa-bell"></i>
+              <span>Notificações</span></a>
+          </li>
+      </ul>
+
+    <div id="content-wrapper">
+
+      <div class="container-fluid">
+
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/index">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">Categorias</li>
+        </ol>
+
+        <div class="d-flex justify-content-center">
+          <div class="col-xl-4 col-sm-6 mb-3">
+            <div class="card text-white bg-success o-hidden h-100">
+              <div class="card-body">
+                <div class="card-body-icon">
+                  <i class="fas fa-fw fa-plus-circle"></i>
+                </div>
+              </div>
+              <a data-target="#addModal" data-toggle="modal" class="card-footer text-white clearfix small z-1" href="#addModal">
+                <span class="float-left">Adicionar uma categoria</span>
+                <span class="float-right">
+                  <i class="fas fa-angle-right"></i>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Page Content -->
+        <!-- DataTables Example -->
+        <div class="card mb-3">
+            
+            <div class="card-header">
+              <i class="fas fa-table"></i>
+              Categorias</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                  
+                <table
+                  data-show-columns="true"
+                  data-page-size="5"
+                  data-show-extended-pagination="true"
+                  data-pagination="true"
+                  class="table table-bordered table-striped"
+                  id="userTable"
+                  data-toggle="userTable"
+                  width="100%"
+                  cellspacing="0">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th data-field="id" data-align="center" data-formatter="editFormatter" data-events="operateEvents">Editar</th>
+                      <th data-field="delete" data-align="center" data-formatter="deleteFormatter" data-events="operateEvents">Eliminar</th>
+                      <th data-field="url" data-align="center" data-formatter="imageFormatter">Imagem</th>
+                      <th data-field="name" data-align="center">Nome</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+            <div class="card-footer small text-muted"></div>
+          </div>
+      </div>
+
+      <!-- Edit Modal -->
+      <div class="modal fade" id="editModal">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+          
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Editar categoria</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form>
+              <div class="row">
+                <div class="col">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="inputGroup-sizing-default">ID</span>
+                        </div>
+                        <input disabled id="id" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                      </div>
+                </div>
+                <div class="col">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
+                    </div>
+                    <input required id="name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                Insira abaixo o URL da imagem do produto.
+                Recomendam-se imagens com tamanho 300x200.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-default">Imagem</span>
+                </div>
+                <input required id="url" type="url" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+              </div>
+            </div>
+            
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Modal -->
+      <div class="modal fade" id="addModal">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+            
+              <!-- Modal Header -->
+              <div class="modal-header">
+                <h4 class="modal-title">Editar produto</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              
+              <!-- Modal body -->
+              <div class="modal-body">
+                <form>
+                <div class="row">
+                  <div class="col">
+                    <div class="input-group mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-default">Nome</span>
+                      </div>
+                      <input required id="c_name" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  Insira abaixo o URL da imagem da categoria.
+                  Recomendam-se imagens com tamanho 300x200.
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+  
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Imagem</span>
+                  </div>
+                  <input required id="c_url" type="url" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+                </div>
+              </div>
+              
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button id="addBtn" type="button" class="btn btn-primary">Adicionar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+
+      
+      <!-- Delete Modal-->
+      <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Eliminar categoria</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>ID: <span id="categoryID"></span></p>
+              <p id="deleteCategory"></p>
+            </div>
+            <div class="modal-footer">
+              <button id="deleteBtn" type="button" class="btn btn-primary">Sim</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Não</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+
+      <!-- Sticky Footer -->
+      <footer class="sticky-footer">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Habitua-te Dashboard 2019</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+    <!-- /.content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Terminar sessão</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Tem a certeza que pretende terminar a sessão?</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-primary" href="\logout">Terminar sessão</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  {% load static %}
+  <script src="{% static 'server/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'server/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  {% load static %}
+  <script src="{% static 'server/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  {% load static %}
+  <script src="{% static 'server/js/sb-admin.min.js' %}"></script>
+  <script src="{% static 'server/js/categories.js' %}"></script>
+
+  <script src="https://unpkg.com/bootstrap-table@1.15.3/dist/bootstrap-table.min.js"></script>
+
+</body>
+
+</html>
